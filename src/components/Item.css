@@ -1,0 +1,18 @@
+
+.ItemPreviewImage {
+    width: 7rem;
+    height: 7rem;
+    margin: 0.2rem;
+    background-color: white;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.LiftOnHover {
+    transition: 0.1s;
+}
+.LiftOnHover:hover {
+    transform: scale(1.04);
+}
