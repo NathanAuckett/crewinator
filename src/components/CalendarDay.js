@@ -8,7 +8,7 @@ function EventLine(props) {
     
     return (
         <div>
-            <p>{time} - {title}</p>
+            <p style={{fontSize: '0.9rem'}}>{time} - {title}</p>
         </div>
     )
 }

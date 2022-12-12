@@ -19,9 +19,11 @@ export function EventCalendar(props){
         }
 
         //Build the calendar array and insert events into their appropriate days
+        const today = new Date();
+        const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let tempDays = [];
         let day;
-        for (let i = 0; i < 30; i ++){
+        for (let i = 1; i <= daysInMonth; i ++){
             day = {day: i, events: []};
 
             for (let event of data.data){

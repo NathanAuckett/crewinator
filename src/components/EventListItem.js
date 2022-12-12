@@ -4,7 +4,7 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 export function EventListItem(props){
     const dateStr = props.date.format('DD/MM/YY');
-    const timeStr = props.date.format('HH:mm:A');
+    const timeStr = props.date.format('hh:mm:A');
     const thumbnailImage = props.thumbnailURL || "https://media3.giphy.com/media/CNAhQuDceLwwo/giphy.gif";
     
     return (

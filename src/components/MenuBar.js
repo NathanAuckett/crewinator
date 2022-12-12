@@ -15,7 +15,7 @@ function NewButton(props){
 
     switch (props.path){
         case "/dashboard/games":
-            button = <Button variant="contained" style={{marginLeft: "1rem"}}>Add Game</Button>;
+            button = <Link to="new-game"><Button variant="contained" style={{marginLeft: "1rem"}}>Add Game</Button></Link>;
             break;
         case "/dashboard/friends":
             button = <Button variant="contained" style={{marginLeft: "1rem"}}>Add Friend</Button>;

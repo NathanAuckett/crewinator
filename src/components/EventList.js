@@ -19,6 +19,7 @@ export function EventList(props){
             console.log(event.title);
             console.log(event.start_date_time);
             event.start_date_time = dayjs(event.start_date_time);
+            
             console.log(event.start_date_time);
         }
 

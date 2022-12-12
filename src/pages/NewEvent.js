@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import Paper from '@mui/material/Paper';
-//import Box from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -17,11 +17,12 @@ export function NewEvent() {
     
     const [title, setTitle] = useState("");
     const [dateTime, setDateTime] = useState(dayjs());
-    const [imageURL, setImageURL] = useState();
+    const [imageURL, setImageURL] = useState('');
 
     async function submitEvent(){
-        //console.log(dateTime.toISOString().replace('T', ' ').replace('Z', ''));
-        const json = JSON.stringify({"title": title, "start_date_time": dateTime.toDate(), "image_url": imageURL, "creator_id": "1"});
+        console.log(dateTime);
+        console.log(dateTime.toISOString());
+        const json = JSON.stringify({"title": title, "start_date_time": dateTime.toISOString().replace('T', ' ').replace('Z', ''), "image_url": imageURL, "creator_id": "1"});
             
         const response = await fetch("http://127.0.0.1:4000/events/create", {
             method: 'POST',
@@ -47,7 +48,7 @@ export function NewEvent() {
             width={"100%"}
         >
             
-            <Paper elevation="15" sx={{width: "400px"}}>
+            <Paper elevation={15} sx={{width: "400px"}}>
                 <Grid container rowSpacing={2} direction="column" alignItems="center" m={1}>
                     <Grid>
                         <h2>New Event</h2>
@@ -73,7 +74,16 @@ export function NewEvent() {
                         </LocalizationProvider>
                     </Grid>
                     <Grid width={"80%"} textAlign="center">
-                        <TextField fullWidth variant="standard" label="Event thumbnail image url" onChange={(e) => {setImageURL(e.target.value)}}/>
+                        <TextField fullWidth variant="standard" label="Event Thumbnail Image URL" onChange={(e) => {setImageURL(e.target.value)}}/>
+                    </Grid>
+                    <Grid>
+                        {imageURL === '' ?
+                            <Box className="ItemPreviewImage" style={{borderStyle: 'solid', borderWidth: '1px'}}/>
+                        :
+                            <Box className="ItemPreviewImage">
+                                <img height="100%" alt="Event Thumbnail" src={imageURL}/>
+                            </Box>
+                        }
                     </Grid>
                     <Grid>
                         <Button variant="contained" onClick={submitEvent}>Create Event</Button>
