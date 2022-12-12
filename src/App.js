@@ -13,6 +13,7 @@ import {GameLibrary} from "./pages/GameLibrary";
 import {FriendList} from "./pages/FriendList";
 import {NewEvent} from './pages/NewEvent';
 import {NewGame} from './pages/NewGame';
+import {SearchGames} from './pages/SearchGames';
 
 const darkTheme = createTheme({
   palette: {
@@ -35,7 +36,8 @@ function App() {
           <Route path="/" element={<LoginSignup/>}/>
           <Route path="/dashboard" element={<Dashboard/>}>
             <Route path="" element={<EventsView/>}/>
-            <Route path="games" element={<GameLibrary/>}/>
+            <Route path="library" element={<GameLibrary/>}/>
+            <Route path="games" element={<SearchGames/>}/>
             <Route path="friends" element={<FriendList/>}/>
             <Route path="new-event" element={<NewEvent/>}/>
             <Route path="new-game" element={<NewGame/>}/>

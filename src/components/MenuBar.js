@@ -40,8 +40,8 @@ export function MenuBar(props){
                 {path !== "/dashboard" ? 
                     <Link to=""><Button><EventIcon fontSize='large'/></Button></Link> : null
                 }
-                {path !== "/dashboard/games" ? 
-                    <Link to="games"><Button><VideogameAssetIcon fontSize='large'/></Button></Link> : null
+                {path !== "/dashboard/library" ? 
+                    <Link to="library"><Button><VideogameAssetIcon fontSize='large'/></Button></Link> : null
                 }
                 {path !== "/dashboard/friends" ? 
                     <Link to="friends"><Button><PeopleIcon fontSize='large'/></Button></Link> : null
