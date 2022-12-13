@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 export function LoginSignupField(props) {
     const navigate = useNavigate();
-    const {setLoggedIn} = React.useContext(LoginContext);
+    const {setLoggedIn, setLoginInfo} = React.useContext(LoginContext);
 
     const [signingUp, setSigningUp] = useState(false);
     const [email, setEmail] = useState("");
@@ -38,8 +38,12 @@ export function LoginSignupField(props) {
         
         const data = await response.json();
 
+        console.log(data);
+
         if (data.result === 200){
+            const userInfo = data.data;
             setLoggedIn(true);
+            setLoginInfo({id: userInfo.id, username: userInfo.username});
             navigate("/dashboard");
         }
     }
