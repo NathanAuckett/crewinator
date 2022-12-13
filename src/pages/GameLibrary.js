@@ -1,15 +1,17 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext} from "react";
+import {LoginContext} from "../components/LoginContext";
 
 import Grid from '@mui/material/Grid'
 
 import { GameListItem } from '../components/GameListItem'
 
 export function GameLibrary(){
+    const {loginInfo} = useContext(LoginContext);
     const [games, setGames] = useState([]);
 
     async function fetchGames(){
-        const response = await fetch("http://127.0.0.1:4000/games");
+        const response = await fetch("http://127.0.0.1:4000/game-users/games-from-user-id?user_id=" + loginInfo.id);
         const data = await response.json();
         
         console.log(data);
@@ -27,7 +29,7 @@ export function GameLibrary(){
                 <h2>Games</h2>
             </Grid>
             {games.map((e) => {
-                return <GameListItem key={e.id} title={e.title} desc={e.description} thumbnailURL={e.image_url}/>
+                return <GameListItem key={e.id} id={e.id} title={e.title} desc={e.description} thumbnailURL={e.image_url}/>
             })}
         </Grid>
     )

@@ -1,6 +1,6 @@
 import "../components/Item.css"
 
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import {LoginContext} from "../components/LoginContext";
 import {useNavigate} from 'react-router-dom'
 
@@ -13,7 +13,9 @@ import { Outlet } from 'react-router-dom';
 
 export function Dashboard() {
     const navigate = useNavigate();
-    const {loggedIn} = React.useContext(LoginContext);
+    const {loggedIn, loginInfo} = useContext(LoginContext);
+
+    console.log(loginInfo);
 
     useEffect(() => {
         // if (!loggedIn){
@@ -25,6 +27,7 @@ export function Dashboard() {
 
     return (
         <Grid container direction="row">
+            <p>Hello, {loginInfo.username}</p>
             <MenuBar/>
             
             <Outlet/>

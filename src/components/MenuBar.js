@@ -14,13 +14,19 @@ function NewButton(props){
     let button;
 
     switch (props.path){
+        case "/dashboard/library":
+            button = <Link to="games"><Button variant="contained" style={{marginLeft: "1rem"}}>Add Game</Button></Link>;
+            break;
         case "/dashboard/games":
-            button = <Link to="new-game"><Button variant="contained" style={{marginLeft: "1rem"}}>Add Game</Button></Link>;
+            button = <Link to="new-game"><Button variant="contained" style={{marginLeft: "1rem"}}>New Game</Button></Link>;
             break;
         case "/dashboard/friends":
             button = <Button variant="contained" style={{marginLeft: "1rem"}}>Add Friend</Button>;
             break;
-        default: button = <Link to="new-event"><Button variant="contained" style={{marginLeft: "1rem"}}>New Event</Button></Link>
+        case "/dashboard":
+            button = <Link to="new-event"><Button variant="contained" style={{marginLeft: "1rem"}}>New Event</Button></Link>
+            break;
+        default: button = null;
     }
 
     return button;
