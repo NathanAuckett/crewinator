@@ -8,9 +8,10 @@ import { FriendListItem } from '../components/FriendListItem'
 export function FriendList(){
     const {loginInfo} = useContext(LoginContext);
     const [friends, setFriends] = useState([]);
+    console.log(loginInfo);
 
     async function fetchFriends(){
-        const response = await fetch("http://127.0.0.1:4000/friends/from-user-id?user_id=" + loginInfo.id);
+        const response = await fetch("http://127.0.0.1:4000/friends/from-user-id?user_id=" + loginInfo.user_id);
         const data = await response.json();
         
         console.log("friends:");

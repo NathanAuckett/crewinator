@@ -43,7 +43,7 @@ export function LoginSignupField(props) {
         if (data.result === 200){
             const userInfo = data.data;
             setLoggedIn(true);
-            setLoginInfo({id: userInfo.id, username: userInfo.username});
+            setLoginInfo(userInfo);
             navigate("/dashboard");
         }
     }

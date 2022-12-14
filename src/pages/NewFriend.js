@@ -15,7 +15,6 @@ export function NewFriend() {
     const [email, setEmail] = useState("");
 
     async function submitRequest(){
-        console.log(loginInfo.id);
         const json = JSON.stringify({"email": email, 'user_id': loginInfo.id});
             
         const response = await fetch("http://127.0.0.1:4000/friends/create", {
