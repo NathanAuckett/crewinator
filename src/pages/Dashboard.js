@@ -1,6 +1,6 @@
 import "../components/Item.css"
 
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState} from 'react';
 import {LoginContext} from "../components/LoginContext";
 import {useNavigate} from 'react-router-dom'
 
@@ -14,8 +14,6 @@ import { Outlet } from 'react-router-dom';
 export function Dashboard() {
     const navigate = useNavigate();
     const {loggedIn, loginInfo} = useContext(LoginContext);
-
-    console.log(loginInfo);
 
     useEffect(() => {
         // if (!loggedIn){

@@ -3,7 +3,9 @@ import Paper from "@mui/material/Paper";
 import Box from '@mui/material/Box';
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
-export function FriendListItem(){
+export function FriendListItem(props){
+    const username = props.username;
+    
     return (
         <Grid xs={5}>
             <Paper variant="outlined" className="LiftOnHover">
@@ -14,7 +16,7 @@ export function FriendListItem(){
                         </Box>
                     </Grid>
                     <Grid>
-                        <h3>Name</h3>
+                        <h3>{username}</h3>
                         <p>Extra text</p>
                     </Grid>
                 </Grid>

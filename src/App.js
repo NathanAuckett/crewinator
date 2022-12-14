@@ -13,6 +13,7 @@ import {GameLibrary} from "./pages/GameLibrary";
 import {FriendList} from "./pages/FriendList";
 import {NewEvent} from './pages/NewEvent';
 import {NewGame} from './pages/NewGame';
+import {NewFriend} from './pages/NewFriend';
 import {SearchGames} from './pages/SearchGames';
 
 const darkTheme = createTheme({
@@ -41,6 +42,7 @@ function App() {
             <Route path="friends" element={<FriendList/>}/>
             <Route path="new-event" element={<NewEvent/>}/>
             <Route path="new-game" element={<NewGame/>}/>
+            <Route path="new-friend" element={<NewFriend/>}/>
           </Route>
         </Routes>
       </Grid>
