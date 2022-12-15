@@ -21,7 +21,7 @@ export function GameListItem(props){
     async function addToLibrary(){
         const json = JSON.stringify({'user_id': loginInfo.id, 'game_id': id});
         
-        const response = await fetch("http://127.0.0.1:4000/game-users/create", {
+        const response = await fetch("/game-users/create", {
             method: 'POST',
             headers: {
                 'Accept': '*/*',

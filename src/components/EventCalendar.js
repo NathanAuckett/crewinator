@@ -10,7 +10,7 @@ export function EventCalendar(props){
     const [days, setDays] = useState([]);
 
     async function fetchAndPopulateDays(){
-        const response = await fetch("http://127.0.0.1:4000/events/?month=12");
+        const response = await fetch("/events/?month=12");
         const data = await response.json();
 
         //Turn dates into datejs objects

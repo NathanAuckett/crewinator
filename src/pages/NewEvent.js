@@ -24,7 +24,7 @@ export function NewEvent() {
         console.log(dateTime.toISOString());
         const json = JSON.stringify({"title": title, "start_date_time": dateTime.toISOString().replace('T', ' ').replace('Z', ''), "image_url": imageURL, "creator_id": "1"});
             
-        const response = await fetch("http://127.0.0.1:4000/events/create", {
+        const response = await fetch("/events/create", {
             method: 'POST',
             headers: {
                 'Accept': '*/*',

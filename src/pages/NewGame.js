@@ -18,7 +18,7 @@ export function NewGame() {
     async function submitGame(){
         const json = JSON.stringify({"title": title, "description": description, "image_url": imageURL});
             
-        const response = await fetch("http://127.0.0.1:4000/games/create", {
+        const response = await fetch("/games/create", {
             method: 'POST',
             headers: {
                 'Accept': '*/*',

@@ -27,7 +27,7 @@ export function LoginSignupField(props) {
     async function login(){
         const json = JSON.stringify({"email": email, "password": password});
         
-        const response = await fetch("http://127.0.0.1:4000/users/authenticate", {
+        const response = await fetch("/users/authenticate", {
             method: 'POST',
             headers: {
                 'Accept': '*/*',
@@ -43,6 +43,7 @@ export function LoginSignupField(props) {
         if (data.result === 200){
             const userInfo = data.data;
             setLoggedIn(true);
+            console.log(userInfo);
             setLoginInfo(userInfo);
             navigate("/dashboard");
         }
@@ -53,7 +54,7 @@ export function LoginSignupField(props) {
         if (password === confirmPassword){
             const json = JSON.stringify({"email": email, "username": username, "password": password});
             
-            const response = await fetch("http://127.0.0.1:4000/users/create", {
+            const response = await fetch("/users/create", {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*',
@@ -77,7 +78,7 @@ export function LoginSignupField(props) {
 
     return (
         <div>
-            <Paper elevation="15" sx={{width: "400px"}}>
+            <Paper elevation={15} sx={{width: "400px"}}>
                 <Grid container rowSpacing={2} direction="column" alignItems="center">
                     <Grid>
                         {signingUp ?

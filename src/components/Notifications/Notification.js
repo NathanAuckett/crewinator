@@ -14,7 +14,7 @@ export function friendRequestAccept(friend_id){
         'callback': async () => {
             const json = JSON.stringify({'status': 'accepted', 'id': friend_id});
             
-            const response = await fetch("http://127.0.0.1:4000/friends/set-friendship-status", {
+            const response = await fetch("/friends/set-friendship-status", {
                 method: 'PUT',
                 headers: {
                     'Accept': '*/*',

@@ -10,7 +10,7 @@ export function EventList(props){
     const [events, setEvents] = useState([]);
 
     async function fetchEvents(){
-        const response = await fetch("http://127.0.0.1:4000/events/future");
+        const response = await fetch("/events/future");
         const data = await response.json();
         
         console.log(data);

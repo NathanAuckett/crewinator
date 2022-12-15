@@ -16,7 +16,7 @@ export function SearchGames() {
     const [games, setGames] = useState([]);
 
     async function searchGames(){
-        const response = await fetch("http://127.0.0.1:4000/games?" + new URLSearchParams({title: title}));
+        const response = await fetch("/games?" + new URLSearchParams({title: title}));
         
         const data = await response.json();
 
@@ -37,18 +37,18 @@ export function SearchGames() {
             rowSpacing={2}
         >
             
-                    <Grid xs={12}>
-                        <h2>Games</h2>
-                    </Grid>
-                    <Grid xs={6}>
-                        <TextField fullWidth variant="standard" label="Search Game Title" onChange={(e) => {setTitle(e.target.value)}}/>
-                    </Grid>
-                    <Grid xs={12}>
-                        <Button variant="contained" onClick={searchGames}>Search</Button>
-                    </Grid>
-                    {games.map((e) => {
-                        return <GameListItem key={e.id} id={e.id} title={e.title} desc={e.description} thumbnailURL={e.image_url} canAddToLibrary={true}/>
-                    })}
+            <Grid xs={12}>
+                <h2>Games</h2>
+            </Grid>
+            <Grid xs={6}>
+                <TextField fullWidth variant="standard" label="Search Game Title" onChange={(e) => {setTitle(e.target.value)}}/>
+            </Grid>
+            <Grid xs={12}>
+                <Button variant="contained" onClick={searchGames}>Search</Button>
+            </Grid>
+            {games.map((e) => {
+                return <GameListItem key={e.id} id={e.id} title={e.title} desc={e.description} thumbnailURL={e.image_url} canAddToLibrary={true}/>
+            })}
         </Grid>
     )
 

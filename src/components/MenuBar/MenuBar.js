@@ -28,7 +28,7 @@ export function MenuBar(){
         const tempNotifications = [];
         
         //Get pending friends
-        const response = await fetch("http://127.0.0.1:4000/friends/pending-from-user-id?user_id=" + loginInfo.id);
+        const response = await fetch("/friends/pending-from-user-id?user_id=" + loginInfo.id);
         const data = await response.json();
         console.log("Notifications");
         console.log(data);
