@@ -1,16 +1,18 @@
 import dayjs from 'dayjs';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import {LoginContext} from "./LoginContext";
 
 import Grid from "@mui/material/Unstable_Grid2/Grid2"
 
 import {EventListItem} from "./EventListItem"
 
 export function EventList(props){
+    const {loginInfo} = useContext(LoginContext);
     const [events, setEvents] = useState([]);
 
     async function fetchEvents(){
-        const response = await fetch("/events/future");
+        const response = await fetch("/events/future?user_id=" + loginInfo.user_id);
         const data = await response.json();
         
         console.log(data);

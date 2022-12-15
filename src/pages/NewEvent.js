@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import {LoginContext} from "../components/LoginContext";
 import {useNavigate} from 'react-router-dom';
 
 import dayjs from 'dayjs';
@@ -13,6 +14,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 export function NewEvent() {
+    const {loginInfo} = useContext(LoginContext);
     const navigate = useNavigate();
     
     const [title, setTitle] = useState("");
@@ -22,7 +24,7 @@ export function NewEvent() {
     async function submitEvent(){
         console.log(dateTime);
         console.log(dateTime.toISOString());
-        const json = JSON.stringify({"title": title, "start_date_time": dateTime.toISOString().replace('T', ' ').replace('Z', ''), "image_url": imageURL, "creator_id": "1"});
+        const json = JSON.stringify({"title": title, "start_date_time": dateTime.toISOString().replace('T', ' ').replace('Z', ''), "image_url": imageURL, 'creator_user_id': loginInfo.user_id});
             
         const response = await fetch("/events/create", {
             method: 'POST',
@@ -48,48 +50,56 @@ export function NewEvent() {
             width={"100%"}
         >
             
-            <Paper elevation={15} sx={{width: "400px"}}>
-                <Grid container rowSpacing={2} direction="column" alignItems="center" m={1}>
-                    <Grid>
-                        <h2>New Event</h2>
-                    </Grid>
-                    <Grid width={"80%"}>
-                        <TextField fullWidth variant="standard" label="Event Title" onChange={(e) => {setTitle(e.target.value)}}/>
-                    </Grid>
-                    <Grid>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <Grid container columnSpacing={2} textAlign="center">
-                                <Grid>
-                                    <h3>Start time</h3>
-                                    
-                                    <DateTimePicker
-                                        label="Start time"
-                                        value={dateTime}
-                                        onChange={(value) => {setDateTime(value)}}
-                                        renderInput={(params) => <TextField {...params} />}
-                                    />
-                                    
+            <Grid xs={8} lg={4}>
+                <Paper elevation={15} >
+                    <Grid container rowSpacing={2} direction="column" alignItems="center" m={1}>
+                        <Grid>
+                            <h2>New Event</h2>
+                        </Grid>
+                        <Grid width={"80%"}>
+                            <TextField fullWidth variant="standard" label="Event Title" onChange={(e) => {setTitle(e.target.value)}}/>
+                        </Grid>
+                        <Grid>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <Grid container columnSpacing={2} textAlign="center">
+                                    <Grid>
+                                        <h3>Start time</h3>
+                                        
+                                        <DateTimePicker
+                                            label="Start time"
+                                            value={dateTime}
+                                            onChange={(value) => {setDateTime(value)}}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                        
+                                    </Grid>
                                 </Grid>
+                            </LocalizationProvider>
+                        </Grid>
+                        <Grid>
+                            <h3>Invite friends</h3>
+                            <Grid container rowSpacing={2} direction="column" alignItems="center">
+                                Friend stuff goes here
                             </Grid>
-                        </LocalizationProvider>
+                        </Grid>
+                        <Grid width={"80%"} textAlign="center">
+                            <TextField fullWidth variant="standard" label="Event Thumbnail Image URL" onChange={(e) => {setImageURL(e.target.value)}}/>
+                        </Grid>
+                        <Grid>
+                            {imageURL === '' ?
+                                <Box className="ItemPreviewImage" style={{borderStyle: 'solid', borderWidth: '1px'}}/>
+                            :
+                                <Box className="ItemPreviewImage">
+                                    <img height="100%" alt="Event Thumbnail" src={imageURL}/>
+                                </Box>
+                            }
+                        </Grid>
+                        <Grid>
+                            <Button variant="contained" onClick={submitEvent}>Create Event</Button>
+                        </Grid>
                     </Grid>
-                    <Grid width={"80%"} textAlign="center">
-                        <TextField fullWidth variant="standard" label="Event Thumbnail Image URL" onChange={(e) => {setImageURL(e.target.value)}}/>
-                    </Grid>
-                    <Grid>
-                        {imageURL === '' ?
-                            <Box className="ItemPreviewImage" style={{borderStyle: 'solid', borderWidth: '1px'}}/>
-                        :
-                            <Box className="ItemPreviewImage">
-                                <img height="100%" alt="Event Thumbnail" src={imageURL}/>
-                            </Box>
-                        }
-                    </Grid>
-                    <Grid>
-                        <Button variant="contained" onClick={submitEvent}>Create Event</Button>
-                    </Grid>
-                </Grid>
-            </Paper>
+                </Paper>
+            </Grid>
         </Grid>
     )
 

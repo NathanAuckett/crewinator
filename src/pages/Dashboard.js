@@ -13,7 +13,6 @@ import { Outlet } from 'react-router-dom';
 
 export function Dashboard() {
     const navigate = useNavigate();
-    const {loggedIn, loginInfo} = useContext(LoginContext);
 
     useEffect(() => {
         // if (!loggedIn){
@@ -25,7 +24,6 @@ export function Dashboard() {
 
     return (
         <Grid container direction="row">
-            <p>Hello, {loginInfo.username}</p>
             <MenuBar/>
             
             <Outlet/>

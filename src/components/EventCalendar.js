@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+import {LoginContext} from "./LoginContext";
 import dayjs from 'dayjs';
 
 import Grid from "@mui/material/Unstable_Grid2/Grid2"
@@ -7,10 +7,11 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2"
 import { CalendarDay } from "./CalendarDay"
 
 export function EventCalendar(props){
+    const {loginInfo} = useContext(LoginContext);
     const [days, setDays] = useState([]);
 
     async function fetchAndPopulateDays(){
-        const response = await fetch("/events/?month=12");
+        const response = await fetch("/events/?month=12&user_id=" + loginInfo.user_id);
         const data = await response.json();
 
         //Turn dates into datejs objects
