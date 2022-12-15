@@ -12,9 +12,9 @@ export function NotificationPanel(props){
     
     return (
         <div className='NotificationPanel'>
-            <Grid container >
+            <Grid container zIndex={-999}>
                 {notifications.map((e) => {
-                    return <NotificationListItem key={e.id} title={e.title} description={e.description} accept={e.accept}/>
+                    return <NotificationListItem key={e.id} title={e.title} description={e.description} thumbnailURL={e.thumbnailURL} accept={e.accept}/>
                 })}
             </Grid>
         </div>

@@ -8,16 +8,17 @@ export function NotificationListItem(props){
     const title = props.title;
     const description = props.description;
     const accept = props.accept;
+    const thumbnailURLs = props.thumbnailURL || "https://media3.giphy.com/media/CNAhQuDceLwwo/giphy.gif";
     
     //console.log(title);
 
     return (
         <Grid xs={12}>
-            <Paper variant="outlined" className="LiftOnHover">
+            <Paper variant="outlined">
                 <Grid container spacing={1}>
                     <Grid>
                         <Box className="ItemPreviewImage">
-                            <img height="100%" alt="Game image" src="https://media3.giphy.com/media/CNAhQuDceLwwo/giphy.gif"/>
+                            <img height="100%" alt="Game image" src={thumbnailURLs}/>
                         </Box>
                     </Grid>
                     <Grid>
