@@ -13,6 +13,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
+import { FriendList } from './FriendList';
+
 export function NewEvent() {
     const {loginInfo} = useContext(LoginContext);
     const navigate = useNavigate();
@@ -20,6 +22,7 @@ export function NewEvent() {
     const [title, setTitle] = useState("");
     const [dateTime, setDateTime] = useState(dayjs());
     const [imageURL, setImageURL] = useState('');
+    const friendSelectionList = new Map();
 
     async function submitEvent(){
         console.log(dateTime);
@@ -64,23 +67,21 @@ export function NewEvent() {
                                 <Grid container columnSpacing={2} textAlign="center">
                                     <Grid>
                                         <h3>Start time</h3>
-                                        
                                         <DateTimePicker
                                             label="Start time"
                                             value={dateTime}
                                             onChange={(value) => {setDateTime(value)}}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
-                                        
                                     </Grid>
                                 </Grid>
                             </LocalizationProvider>
                         </Grid>
-                        <Grid>
+                        <Grid width={'100%'} textAlign="center">
                             <h3>Invite friends</h3>
-                            <Grid container rowSpacing={2} direction="column" alignItems="center">
-                                Friend stuff goes here
-                            </Grid>
+                            <div style={{height: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
+                                <FriendList selectionListPusher={friendSelectionList}/>
+                            </div>
                         </Grid>
                         <Grid width={"80%"} textAlign="center">
                             <TextField fullWidth variant="standard" label="Event Thumbnail Image URL" onChange={(e) => {setImageURL(e.target.value)}}/>
@@ -95,6 +96,7 @@ export function NewEvent() {
                             }
                         </Grid>
                         <Grid>
+                            <Button onClick={() => {console.log(friendSelectionList)}} >lmao</Button>
                             <Button variant="contained" onClick={submitEvent}>Create Event</Button>
                         </Grid>
                     </Grid>
