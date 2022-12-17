@@ -16,20 +16,25 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { FriendList } from './FriendList';
 
 export function NewEvent() {
+    //Send event first
     const {loginInfo} = useContext(LoginContext);
     const navigate = useNavigate();
     
     const [title, setTitle] = useState("");
     const [dateTime, setDateTime] = useState(dayjs());
     const [imageURL, setImageURL] = useState('');
-    const friendSelectionList = new Map();
+    const selectedFriendMap = new Map();
 
     async function submitEvent(){
-        console.log(dateTime);
-        console.log(dateTime.toISOString());
-        const json = JSON.stringify({"title": title, "start_date_time": dateTime.toISOString().replace('T', ' ').replace('Z', ''), "image_url": imageURL, 'creator_user_id': loginInfo.user_id});
+        console.log("Submitting event:");
+        let json = JSON.stringify({
+            "title": title,
+            "start_date_time": dateTime.toISOString().replace('T', ' ').replace('Z', ''),
+            "image_url": imageURL,
+            'creator_user_id': loginInfo.user_id
+        });
             
-        const response = await fetch("/events/create", {
+        let response = await fetch("/events/create", {
             method: 'POST',
             headers: {
                 'Accept': '*/*',
@@ -40,7 +45,34 @@ export function NewEvent() {
         
         const data = await response.json();
 
-        console.log(data);
+        if (data.result === 200){
+            console.log("Submitting friend requests:");
+            const event_id = data.data.insertId;
+            //Send invites to friends
+            const entries = selectedFriendMap.values();
+            for (let friend of entries){
+                console.log(friend);
+                let json = JSON.stringify({
+                    "event_id": event_id,
+                    'user_id': friend.user_id
+                });
+                
+                console.log(json);
+
+                let response = await fetch("/event-invites/create", {
+                    method: 'POST',
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: json
+                });
+
+                let data = await response.json();
+
+                console.log(data);
+            }
+        }
         navigate("/dashboard");
     }
 
@@ -80,7 +112,7 @@ export function NewEvent() {
                         <Grid width={'100%'} textAlign="center">
                             <h3>Invite friends</h3>
                             <div style={{height: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
-                                <FriendList selectionListPusher={friendSelectionList}/>
+                                <FriendList selectionMap={selectedFriendMap}/>
                             </div>
                         </Grid>
                         <Grid width={"80%"} textAlign="center">
@@ -96,7 +128,6 @@ export function NewEvent() {
                             }
                         </Grid>
                         <Grid>
-                            <Button onClick={() => {console.log(friendSelectionList)}} >lmao</Button>
                             <Button variant="contained" onClick={submitEvent}>Create Event</Button>
                         </Grid>
                     </Grid>
@@ -104,5 +135,4 @@ export function NewEvent() {
             </Grid>
         </Grid>
     )
-
 }

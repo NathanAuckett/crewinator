@@ -5,11 +5,9 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import Checkbox from '@mui/material/Checkbox';
 
 export function FriendListItem(props){
-    const key = props.key;
     const friend = props.friend;
-    const selectionListPusher = props.selectionListPusher;
-    const showSelector = true;//props.showSelector;
-    
+    const selectionMap = props.selectionMap;
+
     return (
         <Grid xs={12}>
             <Paper variant="outlined">
@@ -24,17 +22,16 @@ export function FriendListItem(props){
                             <h3>{friend.username}</h3>
                         </Grid>
                     </Grid>
-                    {showSelector ? 
+                    {selectionMap ? 
                         <Grid display="flex" justifyContent='right' xs={true}>
                             <Grid container direction='column' justifyContent='center'>
                                 <Checkbox onClick={(e) => {
                                     if (e.target.checked){
-                                        selectionListPusher.set(key, friend)
+                                        selectionMap.set(friend.user_id, friend);
                                     }
                                     else{
-                                        selectionListPusher.delete(key);
+                                        selectionMap.delete(friend.user_id);
                                     }
-                                    console.log(selectionListPusher);
                                 }}/>
                             </Grid>
                         </Grid>

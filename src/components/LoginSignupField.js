@@ -6,6 +6,14 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { useState } from 'react';
 
@@ -18,7 +26,11 @@ export function LoginSignupField(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
+    function handleClickShowPassword(){
+        setShowPassword((showPassword) => !showPassword);
+    }
 
     function toggleSigningUp(){
         setSigningUp(!signingUp);
@@ -88,7 +100,7 @@ export function LoginSignupField(props) {
                         }
                     </Grid>
                     <Grid>
-                        <TextField variant="standard" label="Email" onChange={(e) => {setEmail(e.target.value)}}/>
+                        <TextField variant="standard" sx={{ m: 1, width: '20ch' }} label="Email" onChange={(e) => {setEmail(e.target.value)}}/>
                     </Grid>
                     {signingUp ? 
                         <Grid>
@@ -97,7 +109,25 @@ export function LoginSignupField(props) {
                         : null
                     }
                     <Grid>
-                        <TextField variant="standard" label="Password" onChange={(e) => {setPassword(e.target.value)}}/>
+                        <FormControl sx={{ m: 1, width: '20ch' }} variant="standard">
+                            <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                            <Input
+                                id="standard-adornment-password"
+                                type={showPassword ? 'text' : 'password'}
+                                onChange={(e) => {setPassword(e.target.value)}}
+                                endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        // onMouseDown={handleMouseDownPassword}
+                                        >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                                }
+                            />
+                        </FormControl>
                     </Grid>
                     {signingUp ? 
                         <Grid>

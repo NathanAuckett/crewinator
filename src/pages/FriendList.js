@@ -8,7 +8,7 @@ import { FriendListItem } from '../components/FriendListItem'
 export function FriendList(props){
     const {loginInfo} = useContext(LoginContext);
     const [friends, setFriends] = useState([]);
-    const selectionListPusher = props.selectionListPusher || null; //use to add select friends to array that parent element can
+    const selectionMap = props.selectionMap || null; //use to add select friends to array that parent element can
 
     async function fetchFriends(){
         const response = await fetch("/friends/from-user-id?user_id=" + loginInfo.user_id);
@@ -30,7 +30,7 @@ export function FriendList(props){
                 <h2>Friends</h2>
             </Grid>
             {friends.map((friend) => {
-                return <FriendListItem selectionListPusher={selectionListPusher} key={friend.id} friend={friend}/>
+                return <FriendListItem selectionMap={selectionMap} key={friend.id} friend={friend}/>
             })}
             
         </Grid>
