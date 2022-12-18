@@ -58,6 +58,9 @@ export function LoginSignupField(props) {
                 navigate("/dashboard");
             }
         }
+        else{
+            toast.error("Invalid email!");
+        }
     }
 
     async function signup(){
@@ -86,6 +89,7 @@ export function LoginSignupField(props) {
             }
         }
         else{
+            toast.error("Invalid email!");
             console.log("Invalid email!");
         }
     }
