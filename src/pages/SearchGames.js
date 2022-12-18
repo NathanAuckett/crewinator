@@ -1,17 +1,12 @@
-import { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 import Grid from '@mui/material/Unstable_Grid2';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 import {GameListItem} from '../components/GameListItem'
 
 export function SearchGames() {
-    //const navigate = useNavigate();
-    
     const [title, setTitle] = useState("");
     const [games, setGames] = useState([]);
 
@@ -21,8 +16,21 @@ export function SearchGames() {
         const data = await response.json();
 
         console.log(data);
-        setGames(data.data);
+        setGames(data);
     }
+
+    async function getGames(){
+        const response = await fetch("/games/");
+        
+        const data = await response.json();
+
+        console.log(data);
+        setGames(data);
+    }
+
+    useEffect(() => {
+        getGames();
+    }, []);
 
     return (
         <Grid
@@ -47,7 +55,7 @@ export function SearchGames() {
                 <Button variant="contained" onClick={searchGames}>Search</Button>
             </Grid>
             {games.map((e) => {
-                return <GameListItem key={e.id} game_id={e.game_id} title={e.title} desc={e.description} thumbnailURL={e.image_url} canAddToLibrary={true}/>
+                return <GameListItem key={e.game_id} game_id={e.game_id} title={e.title} desc={e.description} thumbnailURL={e.image_url} canAddToLibrary={true}/>
             })}
         </Grid>
     )

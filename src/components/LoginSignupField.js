@@ -17,6 +17,8 @@ import Input from '@mui/material/Input';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function LoginSignupField(props) {
     const navigate = useNavigate();
@@ -24,9 +26,11 @@ export function LoginSignupField(props) {
 
     const [signingUp, setSigningUp] = useState(false);
     const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordError, setPasswordError] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     function handleClickShowPassword(){
@@ -38,33 +42,14 @@ export function LoginSignupField(props) {
     }
 
     async function login(){
-        const response = await axios.post('/users/authenticate', {
-            "email": email,
-            "password": password
-        });
-        
-        const data = response.data;
-
-        console.log(data);
-
-        if (response.status === 200){
-            setLoggedIn(true);
-            setLoginInfo(data);
-            navigate("/dashboard");
-        }
-    }
-
-    async function signup(){
-        if (password === confirmPassword){
-            const response = await axios.post('/users/create', {
+        if (validateEmail()){
+            const response = await axios.post('/users/authenticate', {
                 "email": email,
-                "username": username,
                 "password": password
             });
             
             const data = response.data;
 
-            console.log("Singup");
             console.log(data);
 
             if (response.status === 200){
@@ -73,9 +58,54 @@ export function LoginSignupField(props) {
                 navigate("/dashboard");
             }
         }
-        else{
-            console.log("Passwords don't match!");
+    }
+
+    async function signup(){
+        if (validateEmail()){
+            if (validatePasswords()){
+                const response = await axios.post('/users/create', {
+                    "email": email,
+                    "username": username,
+                    "password": password
+                });
+                
+                const data = response.data;
+
+                console.log("Singup");
+                console.log(data);
+
+                if (response.status === 200){
+                    setLoggedIn(true);
+                    setLoginInfo(data);
+                    navigate("/dashboard");
+                }
+            }
+            else{
+                toast.error("Passwords don't match!");
+                console.log("Passwords don't match!");
+            }
         }
+        else{
+            console.log("Invalid email!");
+        }
+    }
+
+    function validateEmail(){
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+            setEmailError(false);
+            return true;
+        }
+        setEmailError(true);
+        return false
+    }
+
+    function validatePasswords(){
+        if (password === confirmPassword){
+            setPasswordError(false);
+            return true;
+        }
+        setPasswordError(true);
+        return false;
     }
 
     async function authenticateToken(){
@@ -105,20 +135,30 @@ export function LoginSignupField(props) {
                         }
                     </Grid>
                     <Grid>
-                        <TextField variant="standard" sx={{ m: 1, width: '20ch' }} label="Email" onChange={(e) => {setEmail(e.target.value)}}/>
+                        <TextField
+                            variant="standard"
+                            sx={{ m: 1, width: '25ch' }}
+                            label="Email"
+                            onChange={(e) => {setEmail(e.target.value)}}
+                            onBlur={()=>{validateEmail()}}
+                            error = {emailError}
+                            helperText = {emailError? "Invalid email!" : null}
+                        />
                     </Grid>
                     {signingUp ? 
                         <Grid>
-                            <TextField variant="standard" label="Username" onChange={(e) => {setUsername(e.target.value)}}/>
+                            <TextField variant="standard" sx={{ m: 1, width: '25ch' }} label="Username" onChange={(e) => {setUsername(e.target.value)}}/>
                         </Grid>
                         : null
                     }
                     <Grid>
-                        <FormControl sx={{ m: 1, width: '20ch' }} variant="standard">
+                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
                             <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                             <Input
                                 type={showPassword ? 'text' : 'password'}
                                 onChange={(e) => {setPassword(e.target.value)}}
+                                error = {passwordError}
+                                onBlur={signingUp ? ()=>{validatePasswords()} : null}
                                 endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -134,20 +174,22 @@ export function LoginSignupField(props) {
                     </Grid>
                     {signingUp ? 
                         <Grid>
-                            <FormControl sx={{ m: 1, width: '20ch' }} variant="standard">
+                            <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
                                 <InputLabel htmlFor="standard-adornment-password">Confirm Password</InputLabel>
                                 <Input
                                     type={showPassword ? 'text' : 'password'}
                                     onChange={(e) => {setConfirmPassword(e.target.value)}}
+                                    error = {passwordError}
+                                    onBlur={()=>{validatePasswords()}}
                                     endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
                                     }
                                 />
                             </FormControl>
@@ -184,6 +226,18 @@ export function LoginSignupField(props) {
                     </Grid>
                 </Grid>
             </Paper>
+            <ToastContainer
+                position="top-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     )
 }

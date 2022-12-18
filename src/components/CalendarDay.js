@@ -7,9 +7,7 @@ function EventLine(props) {
     const time = props.time;
     
     return (
-        <div>
-            <p style={{fontSize: '0.9rem'}}>{time} - {title}</p>
-        </div>
+        <p style={{fontSize: '0.9rem'}}>{time} - {title}</p>
     )
 }
 
@@ -23,7 +21,7 @@ export function CalendarDay(props){
                 {events.map((e) => {
                     let time = e.start_date_time.format('h:mm A');
 
-                    return <EventLine key={e.id} title={e.title} time={time}/>
+                    return <EventLine key={e.event_id} title={e.title} time={time}/>
                 })}
             </Paper>
         </Grid>

@@ -7,7 +7,7 @@ export function ThumbnailImage(props) {
     const size = props.size;
     
     return (
-        <Box className='ItemPreviewImage' style={{width: size, height: size}}>
+        <Box className='ItemPreviewImage' sx={{width: size, height: size}}>
             <img alt="Thumbnail" src={thumbnailURL}/>
         </Box>
     )

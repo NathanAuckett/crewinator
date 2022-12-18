@@ -15,7 +15,6 @@ export function EventListItem(props){
                 <Grid container spacing={1}>
                     <Grid>
                         <Box className="ItemPreviewImage">
-                            {/* <img alt="Game image" src={thumbnailImage}/> */}
                             <ThumbnailImage thumbnailURL={thumbnailImage} size={'7rem'}/>
                         </Box>
                     </Grid>

@@ -1,11 +1,12 @@
 # Crewinator
 
 ## Requirements
-- MySQL needs to be installed on your machine
+- MySQL
     - MySQL Workbench recommended
-- Install NodeJS
+- NodeJS
 
 
+## Running the app
 ### 1. Clone the repos
 1. Clone this repo into a location of your choice
 2. Clone the [Crewinator API repo](https://github.com/NathanAuckett/crewinator_api) to a location of your choice.
@@ -20,6 +21,8 @@
 3. In the root directory of the crewinator_api folder, create a new file named '.env' and open it for editing.
 4. Paste the following content into the .env file
 ```
+API_PORT = 4000
+
 DB_NAME = crewinator
 DB_USER = YOUR_MYSQL_USERNAME
 DB_PASSWORD = YOUR_MYSQL_PASSWORD
@@ -30,18 +33,19 @@ JWT_KEY = J932^fXSPwZwWruNNmd2nj%QE^eNsPv4diJUpBS85LNbf8*rFvikHBNJdXHKUoin68T^z%
 IGDB_CLIENT_ID = YOUR_IGDB_CLIENT_ID
 IGDB_SECRET = YOUR_IGDB_SECRET
 ```
-5. Replace the values with your own. For example set 'DB_USER' and 'DB_PASSWORD' to your own. Ensure the 'DB_HOST' and 'DB_PORT' are correct.
-    - Note that the IGDB values are only required for using igdbGamePuller.js. The api does not rely on this and can function without it.
+5. Replace the values with your own. For example set 'DB_USER' and 'DB_PASSWORD' to your own. Ensure the 'DB_HOST' and 'DB_PORT' are correct. Default port value should work fine.
+    - Note: The IGDB values are only required for using igdbGamePuller.js. The api does not rely on this and can function without it.
 
 ### 4. Prep the front-end
 1. Open a command console window and cd into the crewinator directory that contains the front end.
 2. Run 'npm install' - This will install all dependencies for the front end to function.
+3. Open 'package.json' and edit ```"proxy": "http://localhost:4000"``` to match the port set in the crewinator_api .env file.
 
-### Start the API
+### 5. Start the API
 1. In a command console, CD into the crewinator_api directory and enter 'npm start' to start the api.
     - You should see 'Listening on port YOUR_PORT'
 
-### Start the front-end
+### 6. Start the front-end
 1. In a command console, CD into the crewinator_api directory and enter 'npm start' to start the front-end.
     - A browser window should open and display the login screen.
     - Note this will make the app run in React development mode.

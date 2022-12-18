@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import {LoginContext} from "../components/LoginContext";
 import {useNavigate} from 'react-router-dom';
 
+import axios from 'axios';
+
 import dayjs from 'dayjs';
 
 import Grid from '@mui/material/Unstable_Grid2';
@@ -14,6 +16,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import { FriendList } from '../components/FriendList';
+import { ThumbnailImage } from '../components/ThumbnailImage/ThumbnailImage';
+
+import { toast } from 'react-toastify';
 
 export function NewEvent() {
     //Send event first
@@ -23,57 +28,34 @@ export function NewEvent() {
     const [title, setTitle] = useState("");
     const [dateTime, setDateTime] = useState(dayjs());
     const [imageURL, setImageURL] = useState('');
-    const selectedFriendMap = new Map();
+    const [selectedFriendMap] = useState(new Map());
 
     async function submitEvent(){
         console.log("Submitting event:");
-        let json = JSON.stringify({
+
+        let friends = [];
+        if (selectedFriendMap.size > 0){
+            const entries = selectedFriendMap.values();
+            for (let friend of entries){
+                friends.push(friend);
+            }
+        }
+
+        let response = await axios.post("/events/create", {
             "title": title,
             "start_date_time": dateTime.toISOString().replace('T', ' ').replace('Z', ''),
             "image_url": imageURL,
-            'creator_user_id': loginInfo.user_id
+            'creator_user_id': loginInfo.user_id,
+            "friends": friends
         });
-            
-        let response = await fetch("/events/create", {
-            method: 'POST',
-            headers: {
-                'Accept': '*/*',
-                'Content-Type': 'application/json'
-            },
-            body: json
-        });
-        
-        const data = await response.json();
 
-        if (data.result === 200){
-            console.log("Submitting friend requests:");
-            const event_id = data.data.insertId;
-            //Send invites to friends
-            const entries = selectedFriendMap.values();
-            for (let friend of entries){
-                console.log(friend);
-                let json = JSON.stringify({
-                    "event_id": event_id,
-                    'user_id': friend.user_id
-                });
-                
-                console.log(json);
-
-                let response = await fetch("/event-invites/create", {
-                    method: 'POST',
-                    headers: {
-                        'Accept': '*/*',
-                        'Content-Type': 'application/json'
-                    },
-                    body: json
-                });
-
-                let data = await response.json();
-
-                console.log(data);
-            }
+        if (response.status === 200){
+            toast(`Event, ${title}, created!`);
+            navigate("/dashboard");
         }
-        navigate("/dashboard");
+        else{
+            toast.error(`Error creating event! ${response.data}`);
+        }
     }
 
     return (
@@ -86,7 +68,7 @@ export function NewEvent() {
         >
             
             <Grid xs={8} lg={4}>
-                <Paper elevation={15} >
+                <Paper elevation={15}>
                     <Grid container rowSpacing={2} direction="column" alignItems="center" m={1}>
                         <Grid>
                             <h2>New Event</h2>
@@ -120,10 +102,11 @@ export function NewEvent() {
                         </Grid>
                         <Grid>
                             {imageURL === '' ?
-                                <Box className="ItemPreviewImage" style={{borderStyle: 'solid', borderWidth: '1px'}}/>
+                                <Box style={{borderStyle: 'solid', borderWidth: '1px', width: '7rem', height: '7rem'}}/>
                             :
                                 <Box className="ItemPreviewImage">
-                                    <img height="100%" alt="Event Thumbnail" src={imageURL}/>
+                                    {/* <img height="100%" alt="Event Thumbnail" src={imageURL}/> */}
+                                    <ThumbnailImage thumbnailURL={imageURL} size={'7rem'}/>
                                 </Box>
                             }
                         </Grid>

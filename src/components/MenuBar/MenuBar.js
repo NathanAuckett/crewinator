@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 import PeopleIcon from '@mui/icons-material/People';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
@@ -17,7 +18,7 @@ import { Link, useLocation} from 'react-router-dom';
 
 import { NewButton } from './NewButton';
 import { NotificationPanel } from '../Notifications/NotificationPanel/NotificationPanel';
-import { Notification, friendRequestAccept, eventRequestAccept } from '../Notifications/Notification';
+import { Notification, friendRequestAccept, friendRequestDecline, eventRequestAccept, eventRequestDecline} from '../Notifications/Notification';
 
 
 export function MenuBar(){
@@ -41,21 +42,21 @@ export function MenuBar(){
         const tempNotifications = [];
         
         //Get pending friends
-        let response = await fetch("/friends/pending-from-user-id?user_id=" + loginInfo.user_id);
-        let data = await response.json();
+        let response = await axios.get("/friends/pending-from-user-id?user_id=" + loginInfo.user_id);
         console.log("Notifications");
-        console.log(data);
-        for (let request of data.data){
-            tempNotifications.push(new Notification("Friend Request", `${request.username} wants to be your friend!`, friendRequestAccept(request.friend_id)));
+        console.log(response.data);
+        for (let request of response.data){
+            console.log(request);
+            tempNotifications.push(new Notification("Friend Request", `${request.username} wants to be your friend!`, null, friendRequestAccept(request.friend_id, setShowNotifications), friendRequestDecline(request.friend_id), setShowNotifications));
         }
 
         // Get pending events
-        response = await fetch("/event-invites/get-pending_by_user_id?user_id=" + loginInfo.user_id);
-        data = await response.json();
+        response = await axios.get("/event-invites/get-pending_by_user_id?user_id=" + loginInfo.user_id);
+
         console.log("Events");
-        console.log(data);
-        for (let request of data.data){
-            tempNotifications.push(new Notification("Event Invitation", `You're invited to ${request.title}`, request.image_url, eventRequestAccept(request.event_invite_id)));
+        console.log(response.data);
+        for (let request of response.data){
+            tempNotifications.push(new Notification("Event Invitation", `You're invited to ${request.title}`, request.image_url, eventRequestAccept(request.event_invite_id, setShowNotifications), eventRequestDecline(request.event_invite_id), setShowNotifications));
         }
 
         setNotifications(tempNotifications);
@@ -72,16 +73,29 @@ export function MenuBar(){
             </Grid>
             <Grid xs={2} display="flex" justifyContent="right">
                 {path !== "/dashboard" ? 
-                    <Link to=""><IconButton><EventIcon fontSize='large'/></IconButton></Link> : null
+                    <Tooltip title="Events" arrow>
+                        <Link to=""><IconButton><EventIcon fontSize='large'/></IconButton></Link>
+                    </Tooltip>
+                    : null
                 }
                 {path !== "/dashboard/library" ? 
-                    <Link to="library"><IconButton><VideoGameAssetIcon fontSize='large'/></IconButton></Link> : null
+                    <Tooltip title="Game Library" arrow>
+                        <Link to="library"><IconButton><VideoGameAssetIcon fontSize='large'/></IconButton></Link>
+                    </Tooltip>
+                    : null
                 }
-                {path !== "/dashboard/friends" ? 
-                    <Link to="friends"><IconButton><PeopleIcon fontSize='large'/></IconButton></Link> : null
+                {path !== "/dashboard/friends" ?
+                    <Tooltip title="Friends" arrow>
+                        <Link to="friends"><IconButton><PeopleIcon fontSize='large'/></IconButton></Link>
+                    </Tooltip>
+                    : null
                 }
-                <IconButton onClick={() => {setShowNotifications(!showNotifications)}}><NotificationsNoneIcon fontSize='large'/></IconButton>
-                <IconButton aria-label='Logout' onClick={() => {logout()}}><LogoutIcon fontSize='large'/></IconButton>
+                <Tooltip title="Notifications" arrow>
+                    <IconButton onClick={() => {setShowNotifications(!showNotifications)}}><NotificationsNoneIcon fontSize='large'/></IconButton>
+                </Tooltip>
+                <Tooltip title="Logout" arrow>
+                    <IconButton aria-label='Logout' onClick={() => {logout()}}><LogoutIcon fontSize='large'/></IconButton>
+                </Tooltip>
             </Grid>
             {showNotifications? 
                 <NotificationPanel notifications={notifications}/> : null

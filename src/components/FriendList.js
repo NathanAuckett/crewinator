@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext} from "react";
 import {LoginContext} from "./LoginContext";
 
+import axios from 'axios';
+
 import Grid from '@mui/material/Grid'
 
 import { FriendListItem } from './FriendListItem'
@@ -11,13 +13,12 @@ export function FriendList(props){
     const selectionMap = props.selectionMap || null; //use to add select friends to array that parent element can
 
     async function fetchFriends(){
-        const response = await fetch("/friends/from-user-id?user_id=" + loginInfo.user_id);
-        const data = await response.json();
+        const response = await axios.get("/friends/from-user-id?user_id=" + loginInfo.user_id);
         
         console.log("friends:");
-        console.log(data);
+        console.log(response.data);
 
-        setFriends(data.data);
+        setFriends(response.data);
     }
 
     useEffect(() => {

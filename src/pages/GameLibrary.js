@@ -2,6 +2,8 @@
 import { useState, useEffect, useContext} from "react";
 import {LoginContext} from "../components/LoginContext";
 
+import axios from 'axios';
+
 import Grid from '@mui/material/Grid'
 
 import { GameListItem } from '../components/GameListItem'
@@ -11,12 +13,10 @@ export function GameLibrary(){
     const [games, setGames] = useState([]);
 
     async function fetchGames(){
-        const response = await fetch("/game-users/from-user-id?user_id=" + loginInfo.user_id);
-        const data = await response.json();
-        
-        console.log(data);
+        const response = await axios.get('/game-users/from-user-id?user_id=' + loginInfo.user_id);
+        console.log(response);
 
-        setGames(data.data);
+        setGames(response.data);
     }
 
     useEffect(() => {
