@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import {LoginContext} from "./LoginContext";
 import dayjs from 'dayjs';
+import axios from 'axios';
 
 import Grid from "@mui/material/Unstable_Grid2/Grid2"
 
@@ -11,11 +12,11 @@ export function EventCalendar(props){
     const [days, setDays] = useState([]);
 
     async function fetchAndPopulateDays(){
-        const response = await fetch("/events/?month=12&user_id=" + loginInfo.user_id);
-        const data = await response.json();
+        const response = await axios.get("/events/?month=12&user_id=" + loginInfo.user_id);
+        const data = response.data;
 
         //Turn dates into datejs objects
-        for (let event of data.data){
+        for (let event of data){
             event.start_date_time = dayjs(event.start_date_time);
         }
 
@@ -27,7 +28,7 @@ export function EventCalendar(props){
         for (let i = 1; i <= daysInMonth; i ++){
             day = {day: i, events: []};
 
-            for (let event of data.data){
+            for (let event of data){
                 let date = event.start_date_time.date();
                 if (date === i){
                     day.events.push(event);

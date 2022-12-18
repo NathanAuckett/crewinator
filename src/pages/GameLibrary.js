@@ -11,7 +11,7 @@ export function GameLibrary(){
     const [games, setGames] = useState([]);
 
     async function fetchGames(){
-        const response = await fetch("/game-users/from-user-id?user_id=" + loginInfo.id);
+        const response = await fetch("/game-users/from-user-id?user_id=" + loginInfo.user_id);
         const data = await response.json();
         
         console.log(data);

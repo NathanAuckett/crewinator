@@ -10,7 +10,7 @@ import {LoginSignup} from "./pages/LoginSignup";
 import {Dashboard} from "./pages/Dashboard";
 import {EventsView} from "./pages/EventsView";
 import {GameLibrary} from "./pages/GameLibrary";
-import {FriendList} from "./pages/FriendList";
+import {FriendListPage} from "./pages/FriendListPage";
 import {NewEvent} from './pages/NewEvent';
 import {NewGame} from './pages/NewGame';
 import {NewFriend} from './pages/NewFriend';
@@ -39,7 +39,7 @@ function App() {
             <Route path="" element={<EventsView/>}/>
             <Route path="library" element={<GameLibrary/>}/>
             <Route path="games" element={<SearchGames/>}/>
-            <Route path="friends" element={<FriendList/>}/>
+            <Route path="friends" element={<FriendListPage/>}/>
             <Route path="new-event" element={<NewEvent/>}/>
             <Route path="new-game" element={<NewGame/>}/>
             <Route path="new-friend" element={<NewFriend/>}/>

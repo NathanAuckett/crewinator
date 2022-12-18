@@ -1,13 +1,17 @@
 import { useState, useContext, useEffect } from 'react';
 import {LoginContext} from "../LoginContext";
+import {useNavigate} from 'react-router-dom';
+
+import axios from 'axios';
 
 import Grid from '@mui/material/Unstable_Grid2';
-import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 
 import PeopleIcon from '@mui/icons-material/People';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
+import VideoGameAssetIcon from '@mui/icons-material/VideogameAsset';
 import EventIcon from '@mui/icons-material/Event';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import { Link, useLocation} from 'react-router-dom';
 
@@ -17,12 +21,21 @@ import { Notification, friendRequestAccept, eventRequestAccept } from '../Notifi
 
 
 export function MenuBar(){
+    const navigate = useNavigate();
     const {loginInfo} = useContext(LoginContext);
     const location = useLocation();
     const path = location.pathname;
 
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]);
+
+    async function logout(){
+        const response = await axios.post("/users/logout");
+
+        if (response.status === 200){
+            navigate("/");
+        }
+    }
 
     async function fetchNotifications(){
         const tempNotifications = [];
@@ -54,23 +67,21 @@ export function MenuBar(){
 
     return(
         <Grid container direction="row" xs={12} position='relative'>
-            <Grid xs={9}>
+            <Grid xs={10}>
                 <NewButton/>
-            </Grid>
-            <Grid xs={1}>
-                User ID: {loginInfo.user_id}
             </Grid>
             <Grid xs={2} display="flex" justifyContent="right">
                 {path !== "/dashboard" ? 
-                    <Link to=""><Button><EventIcon fontSize='large'/></Button></Link> : null
+                    <Link to=""><IconButton><EventIcon fontSize='large'/></IconButton></Link> : null
                 }
                 {path !== "/dashboard/library" ? 
-                    <Link to="library"><Button><VideogameAssetIcon fontSize='large'/></Button></Link> : null
+                    <Link to="library"><IconButton><VideoGameAssetIcon fontSize='large'/></IconButton></Link> : null
                 }
                 {path !== "/dashboard/friends" ? 
-                    <Link to="friends"><Button><PeopleIcon fontSize='large'/></Button></Link> : null
+                    <Link to="friends"><IconButton><PeopleIcon fontSize='large'/></IconButton></Link> : null
                 }
-                <Button onClick={() => {setShowNotifications(!showNotifications)}}><NotificationsNoneIcon fontSize='large'/></Button>
+                <IconButton onClick={() => {setShowNotifications(!showNotifications)}}><NotificationsNoneIcon fontSize='large'/></IconButton>
+                <IconButton aria-label='Logout' onClick={() => {logout()}}><LogoutIcon fontSize='large'/></IconButton>
             </Grid>
             {showNotifications? 
                 <NotificationPanel notifications={notifications}/> : null

@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext} from "react";
-import {LoginContext} from "../components/LoginContext";
+import {LoginContext} from "./LoginContext";
 
 import Grid from '@mui/material/Grid'
 
-import { FriendListItem } from '../components/FriendListItem'
+import { FriendListItem } from './FriendListItem'
 
 export function FriendList(props){
     const {loginInfo} = useContext(LoginContext);
@@ -26,9 +26,6 @@ export function FriendList(props){
     
     return (
         <Grid container direction="column" display="flex" alignContent="center" style={{width: "100%"}}>
-            <Grid textAlign="center">
-                <h2>Friends</h2>
-            </Grid>
             {friends.map((friend) => {
                 return <FriendListItem selectionMap={selectionMap} key={friend.id} friend={friend}/>
             })}

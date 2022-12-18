@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import Checkbox from '@mui/material/Checkbox';
 
+import { ThumbnailImage } from './ThumbnailImage/ThumbnailImage'
+
 export function FriendListItem(props){
     const friend = props.friend;
     const selectionMap = props.selectionMap;
@@ -13,9 +15,7 @@ export function FriendListItem(props){
             <Paper variant="outlined">
                 <Grid container spacing={2}>
                     <Grid>
-                        <Box className="ItemPreviewImage">
-                            <img height="100%" alt="Game image" src="https://media3.giphy.com/media/CNAhQuDceLwwo/giphy.gif"/>
-                        </Box>
+                        <ThumbnailImage thumbnailURL={"https://media3.giphy.com/media/CNAhQuDceLwwo/giphy.gif"} size={'5rem'}/>
                     </Grid>
                     <Grid display='flex'>
                         <Grid container direction='column' justifyContent='center'>

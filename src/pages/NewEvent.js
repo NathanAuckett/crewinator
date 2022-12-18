@@ -13,7 +13,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-import { FriendList } from './FriendList';
+import { FriendList } from '../components/FriendList';
 
 export function NewEvent() {
     //Send event first

@@ -2,6 +2,8 @@ import Paper from "@mui/material/Paper";
 import Box from '@mui/material/Box';
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
+import { ThumbnailImage } from './ThumbnailImage/ThumbnailImage'
+
 export function EventListItem(props){
     const dateStr = props.date.format('DD/MM/YY');
     const timeStr = props.date.format('hh:mm:A');
@@ -9,11 +11,12 @@ export function EventListItem(props){
     
     return (
         <Grid>
-            <Paper variant="outlined" className="LiftOnHover">
+            <Paper variant="outlined">
                 <Grid container spacing={1}>
                     <Grid>
                         <Box className="ItemPreviewImage">
-                            <img alt="Game image" src={thumbnailImage}/>
+                            {/* <img alt="Game image" src={thumbnailImage}/> */}
+                            <ThumbnailImage thumbnailURL={thumbnailImage} size={'7rem'}/>
                         </Box>
                     </Grid>
                     <Grid>

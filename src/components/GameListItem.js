@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import {useLocation} from 'react-router-dom';
+import { useContext} from 'react';
 import {LoginContext} from "../components/LoginContext";
 
 import Paper from "@mui/material/Paper";
@@ -9,17 +8,15 @@ import { Button } from '@mui/material';
 
 export function GameListItem(props){
     const {loginInfo} = useContext(LoginContext);
-    const location = useLocation();
-    const path = location.pathname;
 
-    const id = props.id;
+    const game_id = props.game_id;
     const title = props.title;
     const desc = props.desc;
     const thumbnailImage = props.thumbnailURL || "https://media3.giphy.com/media/CNAhQuDceLwwo/giphy.gif";
     const canAddToLibrary = props.canAddToLibrary || false;
     
     async function addToLibrary(){
-        const json = JSON.stringify({'user_id': loginInfo.id, 'game_id': id});
+        const json = JSON.stringify({'user_id': loginInfo.user_id, 'game_id': game_id});
         
         const response = await fetch("/game-users/create", {
             method: 'POST',
@@ -37,7 +34,7 @@ export function GameListItem(props){
 
     return (
         <Grid xs={5}>
-            <Paper variant="outlined" className="LiftOnHover">
+            <Paper variant="outlined">
                 <Grid container spacing={1}>
                     <Grid>
                         <Box className="ItemPreviewImage">

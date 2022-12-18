@@ -1,6 +1,8 @@
-import React from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {LoginContext} from "./LoginContext";
 import {useNavigate} from 'react-router-dom';
+
+import axios from 'axios';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import Paper from '@mui/material/Paper';
@@ -15,11 +17,10 @@ import Input from '@mui/material/Input';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { useState } from 'react';
 
 export function LoginSignupField(props) {
     const navigate = useNavigate();
-    const {setLoggedIn, setLoginInfo} = React.useContext(LoginContext);
+    const {setLoggedIn, setLoginInfo} = useContext(LoginContext);
 
     const [signingUp, setSigningUp] = useState(false);
     const [email, setEmail] = useState("");
@@ -37,48 +38,38 @@ export function LoginSignupField(props) {
     }
 
     async function login(){
-        const json = JSON.stringify({"email": email, "password": password});
-        
-        const response = await fetch("/users/authenticate", {
-            method: 'POST',
-            headers: {
-                'Accept': '*/*',
-                'Content-Type': 'application/json'
-            },
-            body: json
+        const response = await axios.post('/users/authenticate', {
+            "email": email,
+            "password": password
         });
         
-        const data = await response.json();
+        const data = response.data;
 
         console.log(data);
 
-        if (data.result === 200){
-            const userInfo = data.data;
+        if (response.status === 200){
             setLoggedIn(true);
-            console.log(userInfo);
-            setLoginInfo(userInfo);
+            setLoginInfo(data);
             navigate("/dashboard");
         }
     }
 
-
     async function signup(){
         if (password === confirmPassword){
-            const json = JSON.stringify({"email": email, "username": username, "password": password});
-            
-            const response = await fetch("/users/create", {
-                method: 'POST',
-                headers: {
-                    'Accept': '*/*',
-                    'Content-Type': 'application/json'
-                },
-                body: json
+            const response = await axios.post('/users/create', {
+                "email": email,
+                "username": username,
+                "password": password
             });
             
-            const data = await response.json();
+            const data = response.data;
 
-            if (data.result === 200){
+            console.log("Singup");
+            console.log(data);
+
+            if (response.status === 200){
                 setLoggedIn(true);
+                setLoginInfo(data);
                 navigate("/dashboard");
             }
         }
@@ -87,6 +78,20 @@ export function LoginSignupField(props) {
         }
     }
 
+    async function authenticateToken(){
+        const response = await axios.post('/users/authenticate-token');
+
+        if (response.status === 200){
+            const data = response.data;
+            setLoggedIn(true);
+            setLoginInfo(data);
+            navigate("/dashboard");
+        }
+    }
+
+    useEffect(() => {
+        authenticateToken();
+    }, []);
 
     return (
         <div>
@@ -112,7 +117,6 @@ export function LoginSignupField(props) {
                         <FormControl sx={{ m: 1, width: '20ch' }} variant="standard">
                             <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                             <Input
-                                id="standard-adornment-password"
                                 type={showPassword ? 'text' : 'password'}
                                 onChange={(e) => {setPassword(e.target.value)}}
                                 endAdornment={
@@ -120,7 +124,6 @@ export function LoginSignupField(props) {
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
-                                        // onMouseDown={handleMouseDownPassword}
                                         >
                                         {showPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
@@ -131,7 +134,23 @@ export function LoginSignupField(props) {
                     </Grid>
                     {signingUp ? 
                         <Grid>
-                            <TextField variant="standard" label="Confirm Password" onChange={(e) => {setConfirmPassword(e.target.value)}}/>
+                            <FormControl sx={{ m: 1, width: '20ch' }} variant="standard">
+                                <InputLabel htmlFor="standard-adornment-password">Confirm Password</InputLabel>
+                                <Input
+                                    type={showPassword ? 'text' : 'password'}
+                                    onChange={(e) => {setConfirmPassword(e.target.value)}}
+                                    endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
                         </Grid>
                         : null
                     }

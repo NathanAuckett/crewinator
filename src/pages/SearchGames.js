@@ -47,7 +47,7 @@ export function SearchGames() {
                 <Button variant="contained" onClick={searchGames}>Search</Button>
             </Grid>
             {games.map((e) => {
-                return <GameListItem key={e.id} id={e.id} title={e.title} desc={e.description} thumbnailURL={e.image_url} canAddToLibrary={true}/>
+                return <GameListItem key={e.id} game_id={e.game_id} title={e.title} desc={e.description} thumbnailURL={e.image_url} canAddToLibrary={true}/>
             })}
         </Grid>
     )
