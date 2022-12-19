@@ -38,6 +38,7 @@ export function LoginSignupField(props) {
     }
 
     function toggleSigningUp(){
+        setPasswordError(false);
         setSigningUp(!signingUp);
     }
 
@@ -124,7 +125,25 @@ export function LoginSignupField(props) {
     }
 
     useEffect(() => {
-        authenticateToken();
+        authenticateToken(); //Attempt auto login based on token
+
+        //Add event listener for enter key
+        const listener = event => {
+            if (event.code === "Enter" || event.code === "NumpadEnter") {
+                event.preventDefault();
+              
+                if (signingUp){
+                    signup();
+                }
+                else{
+                    login();
+                }
+            }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        }
     }, []);
 
     return (
